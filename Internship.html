@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temperature Converter</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://img.goodfon.com/wallpaper/nbig/7/6c/gradusnik-zhara-leto-globalnoe-poteplenie.webp'); 
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    h2 {
+        color: #007bff;
+        text-align: center;
+    }
+    input[type="number"], select, button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 20px;
+        text-align: center;
+    }
+    .error-message {
+        color: red;
+        font-style: italic;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Temperature Converter</h2>
+
+    <div>
+        <label for="temperature">Temperature:</label>
+        <input type="number" id="temperature" step="any" placeholder="Enter temperature...">
+        <br>
+        <span id="temperature-error" class="error-message"></span>
+    </div>
+    <div>
+        <label for="from-unit">From:</label>
+        <select id="from-unit">
+            <option value="celsius">Celsius</option>
+            <option value="fahrenheit">Fahrenheit</option>
+            <option value="kelvin">Kelvin</option>
+        </select>
+    </div>
+    <div>
+        <label for="to-unit">To:</label>
+        <select id="to-unit">
+            <option value="celsius">Celsius</option>
+            <option value="fahrenheit">Fahrenheit</option>
+            <option value="kelvin">Kelvin</option>
+        </select>
+    </div>
+    <button onclick="convertTemperature()">Convert</button>
+    <div id="result"></div>
+</div>
+
+<script>
+function convertTemperature() {
+    var temperatureInput = document.getElementById("temperature").value;
+    var fromUnit = document.getElementById("from-unit").value;
+    var toUnit = document.getElementById("to-unit").value;
+    var resultElement = document.getElementById("result");
+    var errorElement = document.getElementById("temperature-error");
+
+    // Clear previous error messages
+    errorElement.textContent = "";
+
+    // Check if input is a number
+    if (isNaN(temperatureInput)) {
+        errorElement.textContent = "Please enter a valid number!";
+        return;
+    }
+
+    var convertedTemperature;
+
+    // Convert temperature based on selected units
+    if (fromUnit === "celsius" && toUnit === "fahrenheit") {
+        convertedTemperature = (temperatureInput * 9/5) + 32;
+    } else if (fromUnit === "celsius" && toUnit === "kelvin") {
+        convertedTemperature = parseFloat(temperatureInput) + 273.15;
+    } else if (fromUnit === "fahrenheit" && toUnit === "celsius") {
+        convertedTemperature = (temperatureInput - 32) * 5/9;
+    } else if (fromUnit === "fahrenheit" && toUnit === "kelvin") {
+        convertedTemperature = (parseFloat(temperatureInput) + 459.67) * 5/9;
+    } else if (fromUnit === "kelvin" && toUnit === "celsius") {
+        convertedTemperature = parseFloat(temperatureInput) - 273.15;
+    } else if (fromUnit === "kelvin" && toUnit === "fahrenheit") {
+        convertedTemperature = parseFloat(temperatureInput) * 9/5 - 459.67;
+    } else {
+        convertedTemperature = parseFloat(temperatureInput); // No conversion needed
+    }
+
+    // Display the result
+    resultElement.innerHTML = `<p>Converted Temperature: <strong>${convertedTemperature.toFixed(2)} ${toUnit}</strong></p>`;
+}
+</script>
+
+</body>
+</html>
